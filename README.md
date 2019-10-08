@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/paulodiovani/hacktoberrank.svg?branch=master)](https://travis-ci.org/paulodiovani/hacktoberrank)
+
 # Hacktober Rank Challenge
 
 ## Project Description
