@@ -2,8 +2,6 @@ language: node_js
 node_js:
   - 12.11.0
   - 10.16.0
-  - lts
-  - latest
 
 addons:
   apt:
