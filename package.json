@@ -2,6 +2,9 @@
   "name": "hacktoberrank",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "^10.16.0"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "serve-backend": "node ./backend/index.js",
