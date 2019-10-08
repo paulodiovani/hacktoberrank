@@ -1,0 +1,26 @@
+{
+  "name": "hacktoberrank",
+  "version": "1.0.0",
+  "description": "A software to create a local server ",
+  "main": "src/App.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "mongodb": "^3.3.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "Node src/App.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulodiovani/hacktoberrank.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/paulodiovani/hacktoberrank/issues"
+  },
+  "homepage": "https://github.com/paulodiovani/hacktoberrank#readme"
+}
