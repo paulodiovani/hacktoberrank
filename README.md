@@ -24,6 +24,11 @@ npm install
 npm run serve
 ```
 
+### Serves Express backend
+```
+npm run serve-backend
+```
+
 ### Compiles and minifies for production
 ```
 npm run build
