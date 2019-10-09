@@ -1,21 +1,21 @@
-const express = require("express");
-const PullRequest = require("../../services/PullRequest");
+const express = require('express')
+const PullRequest = require('../../services/PullRequest')
 
-const PullRequestController = express();
+const PullRequestController = express()
 
-PullRequestController.get("/", async function(req, res) {
-  let response = {};
-  let pullRequest = new PullRequest();
+PullRequestController.get('/', async function (req, res) {
+  let response = {}
+  let pullRequest = new PullRequest()
 
   try {
-    response = await pullRequest.getAll();
+    response = await pullRequest.getAll()
 
-    response.groupByUserId().sortByMostActive();
+    response.groupByUserId().sortByMostActive()
 
-    res.send(response);
+    res.send(response)
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error)
   }
-});
+})
 
-module.exports = PullRequestController;
+module.exports = PullRequestController
