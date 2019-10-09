@@ -1,17 +1,20 @@
 const axios = require('axios')
-let pEndpoint =
-  'https://api.github.com/search/issues?q=is:pr created:2019-10-01..2019-10-31&sort=created&order=asc'
+
+let pEndpoint = (year) => {
+  return `https://api.github.com/search/issues?q=is:pr created:${year}-10-01..${year}-10-31&sort=created&order=desc`
+}
 
 class PullRequest {
-  constructor () {
+  constructor (year) {
     this.data = {}
+    this.year = year || (new Date()).getFullYear();
   }
   /**
    * Retrieves all pull requests (github limits them to 100)
    */
   async getAll () {
     try {
-      let response = await axios.get(pEndpoint)
+      let response = await axios.get(pEndpoint(this.year))
 
       this.data = response.data
 
