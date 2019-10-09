@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - 12.11.0
+  - 10.16.0
+
+addons:
+  apt:
+    packages:
+      - libgconf-2-4
+
+cache:
+  directories:
+    - ~/.cache
+
+script:
+  - npm run lint
+  - npm run test:unit
+  - npm run test:e2e -- --headless
+  - npm run build
