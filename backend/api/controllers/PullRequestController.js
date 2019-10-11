@@ -10,7 +10,9 @@ PullRequestController.get('/:year?', async function (req, res) {
   try {
     response = await pullRequest.getAll()
 
-    response.groupByUserId().sortByMostActive()
+    response
+      .groupByUser()
+      .sortByMostActive()
 
     res.send(response.data)
   } catch (error) {

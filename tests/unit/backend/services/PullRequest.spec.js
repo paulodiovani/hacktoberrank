@@ -46,9 +46,9 @@ describe('PullRequest service', () => {
     })
   })
 
-  describe('method groupByUserId', () => {
+  describe('method groupByUser', () => {
     let res = {}
-    let testUserId
+    let testUsername
     let testPrUrl
 
     beforeAll(async () => {
@@ -60,19 +60,35 @@ describe('PullRequest service', () => {
         console.error(error)
       }
 
-      testUserId = res.data.items[0].user.id
+      testUsername = res.data.items[0].user.login
       testPrUrl = res.data.items[0].html_url
 
-      res.groupByUserId()
+      res.groupByUser()
     })
 
     it('does exist', () => {
-      expect(typeof pr.groupByUserId === 'function').toBe(true)
+      expect(typeof pr.groupByUser === 'function').toBe(true)
     })
 
-    it(`returns an object that 
-            has a user id and a child that is a pull request`, () => {
-      expect(res.data[testUserId].indexOf(testPrUrl) >= 0).toBe(true)
+    describe('returns an array', () => {
+      it('is an array of objects', () => {
+        expect(typeof res.data[0] == 'object').toBe(true)
+      })
+      it('has an object with a username ', () => {
+        let user = res.data.find((obj) => {
+          return obj.username == testUsername
+        })
+
+        expect(user).not.toBeUndefined()
+      })
+
+      it('and a child that is an array pull requests', () => {
+        let user = res.data.find((obj) => {
+          return obj.username == testUsername
+        })
+
+        expect(user.pullRequests[0] == testPrUrl).toBe(true)
+      })
     })
   })
 
@@ -87,7 +103,7 @@ describe('PullRequest service', () => {
         console.error(error)
       }
 
-      res.groupByUserId().sortByMostActive()
+      res.groupByUser().sortByMostActive()
     })
 
     it('does exist', () => {
@@ -96,11 +112,12 @@ describe('PullRequest service', () => {
 
     it('has the first element with most number of pull requests', () => {
       let max = 0
-      res.data.map((val, key) => {
-        max = val[1].length > max ? val[1].length : max
+
+      res.data.map((obj) => {
+        max = obj.pullRequests.length > max ? obj.pullRequests.length : max
       })
 
-      expect(res.data[0][1].length).toBe(max)
+      expect(res.data[0].pullRequests.length).toBe(max)
     })
   })
 })
