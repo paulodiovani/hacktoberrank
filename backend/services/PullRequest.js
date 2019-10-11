@@ -31,7 +31,7 @@ class PullRequest {
   groupByUser () {
     let prArray = []
 
-    this.data.items.map((item) => {
+    this.data.items.forEach((item) => {
       let user = prArray.find((ele) => {
         return ele.username === item.user.login
       })
@@ -52,6 +52,7 @@ class PullRequest {
 
     return this
   }
+
   /**
    * Sort grouped data by user who has most pull requests
    */
