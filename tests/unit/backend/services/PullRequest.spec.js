@@ -72,11 +72,11 @@ describe('PullRequest service', () => {
 
     describe('returns an array', () => {
       it('is an array of objects', () => {
-        expect(typeof res.data[0] == 'object').toBe(true)
+        expect(typeof res.data[0] === 'object').toBe(true)
       })
       it('has an object with a username ', () => {
         let user = res.data.find((obj) => {
-          return obj.username == testUsername
+          return obj.username === testUsername
         })
 
         expect(user).not.toBeUndefined()
@@ -84,10 +84,10 @@ describe('PullRequest service', () => {
 
       it('and a child that is an array pull requests', () => {
         let user = res.data.find((obj) => {
-          return obj.username == testUsername
+          return obj.username === testUsername
         })
 
-        expect(user.pullRequests[0] == testPrUrl).toBe(true)
+        expect(user.pullRequests[0] === testPrUrl).toBe(true)
       })
     })
   })

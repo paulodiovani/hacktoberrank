@@ -29,12 +29,11 @@ class PullRequest {
    * Group pull requests by user id
    */
   groupByUser () {
-    let prArray = [];
+    let prArray = []
 
     this.data.items.map((item) => {
-
       let user = prArray.find((ele) => {
-        return ele.username == item.user.login
+        return ele.username === item.user.login
       })
 
       if (user) {
@@ -43,13 +42,13 @@ class PullRequest {
         prArray.push({
           username: item.user.login,
           pullRequests: [
-           item.html_url,
+            item.html_url
           ]
         })
       }
     })
 
-    this.data = prArray;
+    this.data = prArray
 
     return this
   }
