@@ -9,55 +9,51 @@ PullRequestController.get('/:year?', async function (req, res) {
   let year = req.params.year
   let pullRequest = new PullRequest(year)
 
-  redisClient.exists('users')
-    .then(async (users) => {
-      if (users === 0) {
-        try {
-          response = await pullRequest.getAll()
+  try {
+    const users = await redisClient.exists(`users:${year}`)
 
-          response
-            .groupByUser()
-            .sortByMostActive()
+    if (users === 0) {
+      response = await pullRequest.getAll()
 
-          let arrayOfOrderedUsers = []
-          let data = response.data
+      response
+        .groupByUser()
+        .sortByMostActive()
 
-          for (let i = 0; i < data.length; i++) {
-            await redisClient.rpush(`pull-requests:${year}:${data[i].username}`,
-              data[i].pullRequests)
-            arrayOfOrderedUsers.push(data[i].pullRequests.length, data[i].username)
-          }
+      let arrayOfOrderedUsers = []
+      let data = response.data
+      let promises = []
 
-          await redisClient.zadd('users', arrayOfOrderedUsers)
-
-          res.json(response.data)
-        } catch (error) {
-          res.status(400).send(error)
-        }
-      } else {
-        try {
-          let users = await redisClient.zrevrange('users', 0, -1)
-          let arrOfObjects = []
-
-          for (let i = 0; i < users.length; i++) {
-            let result = await redisClient.lrange(`pull-requests:${year}:${users[i]}`, 0, -1)
-            arrOfObjects.push({
-              username: users[i],
-              pullRequests: result
-            })
-          }
-
-          res.json(arrOfObjects)
-        } catch (error) {
-          console.error(error)
-        }
+      for (let i = 0; i < data.length; i++) {
+        promises[i] = redisClient.sadd(`pull-requests:${year}:${data[i].username}`,
+          data[i].pullRequests)
+        arrayOfOrderedUsers.push(data[i].pullRequests.length, data[i].username)
       }
-    })
-    .catch((error) => {
-      if (error) {
-        console.error(error)
+
+      await Promise.all(promises)
+      await redisClient.zadd(`users:${year}`, arrayOfOrderedUsers)
+
+      res.json(response.data)
+    } else {
+      let users = await redisClient.zrevrange(`users:${year}`, 0, -1)
+      let arrOfObjects = []
+      let promises = []
+
+      for (let i = 0; i < users.length; i++) {
+        promises[i] = redisClient.smembers(`pull-requests:${year}:${users[i]}`)
       }
-    })
+
+      let result = await Promise.all(promises)
+      for (let i = 0; i < users.length; i++) {
+        arrOfObjects.push({
+          username: users[i],
+          pullRequests: result[i]
+        })
+      }
+      res.json(arrOfObjects)
+    }
+  } catch (error) {
+    res.status(400).send(error)
+  }
 })
 
 module.exports = PullRequestController
