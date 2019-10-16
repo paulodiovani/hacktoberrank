@@ -5,9 +5,12 @@ const redisClient = require('../../redis')
 const PullRequestController = express()
 
 PullRequestController.get('/:year?', async function (req, res) {
+  const year = req.params.year
   let response = {}
-  let year = req.params.year
-  let pullRequest = new PullRequest(year)
+  let startDate = `${year}-10-01 00:00:00`
+  let endDate = `${year}-10-31 23:59:59`
+
+  let pullRequest = new PullRequest(startDate, endDate)
 
   try {
     const users = await redisClient.exists(`users:${year}`)

@@ -2,28 +2,38 @@ const CronJob = require('cron').CronJob
 const PullRequest = require('./services/PullRequest')
 const redisClient = require('./redis')
 
-const year = 2019
+let startDate = '2019-10-01 00:00:00'
+const endDate = '2019-10-31 23:59:59'
+const year = new Date(startDate).getFullYear()
 
 async function runCrons () {
-  const newjob = new CronJob('* * * * *', async () => {
+  const updatePullRequests = new CronJob('*/5 * * * *', async () => {
     try {
-      let pullRequest = new PullRequest(year)
+      let latestTimestampInRedis = await redisClient.get('latest_timestamp')
+
+      if (latestTimestampInRedis) {
+        startDate = latestTimestampInRedis
+      }
+
+      let pullRequest = new PullRequest(startDate, endDate)
 
       let response = await pullRequest.getAll()
+
+      let latestTimestamp = response.latestTimestamp()
+      await redisClient.set('latest_timestamp', latestTimestamp)
 
       response
         .groupByUser()
         .sortByMostActive()
 
       let data = response.data
-
       let prsPromises = []
 
-      for (let pr in data) {
+      data.forEach((pr) => {
         prsPromises.push(
-          redisClient.sadd(`pull-requests:${year}:${data[pr].username}`, data[pr].pullRequests)
+          redisClient.sadd(`pull-requests:${year}:${pr.username}`, pr.pullRequests)
         )
-      }
+      })
 
       let addedPullsRef = await Promise.all(prsPromises)
 
@@ -52,12 +62,13 @@ async function runCrons () {
 
         await redisClient.zadd(`users:${year}`, userList)
       } else {
-      // initial case where there is no users
+        // initial case where there is no users
         let arrayOfOrderedUsers = []
 
-        for (let i = 0; i < data.length; i++) {
-          arrayOfOrderedUsers.push(data[i].pullRequests.length, data[i].username)
-        }
+        data.forEach((user) => {
+          const score = user.pullRequests.length
+          arrayOfOrderedUsers.push(score, user.username)
+        })
 
         await redisClient.zadd(`users:${year}`, arrayOfOrderedUsers)
       }
@@ -67,7 +78,7 @@ async function runCrons () {
   }, null, true, process.env.Timezone ? process.env.Timezone : 'America/Los_Angeles')
 
   return [
-    newjob
+    updatePullRequests
   ]
 }
 

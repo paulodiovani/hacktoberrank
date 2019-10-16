@@ -1,13 +1,14 @@
 const axios = require('axios')
 
-let pEndpoint = (year) => {
-  return `https://api.github.com/search/issues?q=is:pr created:${year}-10-01..${year}-10-31&sort=created&order=desc`
+let pEndpoint = (startDate, endDate) => {
+  return `https://api.github.com/search/issues?q=is:pr created:${startDate}..${endDate}&sort=created&order=asc`
 }
 
 class PullRequest {
-  constructor (year) {
+  constructor (startDate, endDate) {
     this.data = {}
-    this.year = year || (new Date()).getFullYear()
+    this.startDate = startDate || '2019-10-01 00:00:00'
+    this.endDate = endDate || '2019-10-31 23:59:59'
   }
 
   /**
@@ -15,7 +16,7 @@ class PullRequest {
    */
   async getAll () {
     try {
-      let response = await axios.get(pEndpoint(this.year))
+      let response = await axios.get(pEndpoint(this.startDate, this.endDate))
 
       this.data = response.data
 
@@ -62,6 +63,13 @@ class PullRequest {
     })
 
     return this
+  }
+
+  /**
+   * Returns the latest timestamp
+   */
+  latestTimestamp () {
+    return this.data.items[this.data.items.length - 1].created_at
   }
 }
 
