@@ -1,11 +1,14 @@
 const express = require('express')
 const router = require('./api/router')
+const runCrons = require('./cron')
 
 const app = express()
 
 app.use('/api/v1', router)
 
-const port = 8001
+runCrons()
+
+const port = 8002
 
 app.listen(port, () =>
   console.log(`backend service listening at port ${port}`)
