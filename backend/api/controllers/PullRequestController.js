@@ -6,7 +6,7 @@ const PullRequestController = express()
 
 PullRequestController.get('/:year?', async function (req, res) {
   let response = {}
-  let year = req.params.year
+  const year = req.params.year || (new Date()).getFullYear()
   let pullRequest = new PullRequest(year)
 
   try {
@@ -24,9 +24,12 @@ PullRequestController.get('/:year?', async function (req, res) {
       let promises = []
 
       for (let i = 0; i < data.length; i++) {
-        promises[i] = redisClient.sadd(`pull-requests:${year}:${data[i].username}`,
-          data[i].pullRequests)
-        arrayOfOrderedUsers.push(data[i].pullRequests.length, data[i].username)
+        let username = data[i].username
+        let score = data[i].pullRequests.length
+        let pullRequests = data[i].pullRequests
+
+        promises[i] = redisClient.sadd(`pull-requests:${year}:${username}`, pullRequests)
+        arrayOfOrderedUsers.push(score, username)
       }
 
       await Promise.all(promises)
