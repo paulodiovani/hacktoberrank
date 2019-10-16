@@ -12,7 +12,7 @@ The rank page lists the rank per year and allows to filter by location.
 
 Pull requests are welcome!!
 
-It's a challenge about create a whole project, from beginning to end, should be done through pull requests from other users. 
+It's a challenge about create a whole project, from beginning to end, should be done through pull requests from other users.
 
 See [issue #1](https://github.com/paulodiovani/hacktoberrank/issues/1) for more details.
 
@@ -21,6 +21,8 @@ See [issue #1](https://github.com/paulodiovani/hacktoberrank/issues/1) for more 
 npm install
 ```
 
+Install Redis: [Redis Documentation](https://redis.io/topics/quickstart)
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
@@ -28,7 +30,7 @@ npm run serve
 
 ### Serves Express backend
 ```
-npm run serve-backend
+npm run start
 ```
 
 ### Compiles and minifies for production

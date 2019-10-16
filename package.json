@@ -7,7 +7,8 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve-backend": "npx nodemon ./backend/index.js",
+    "prestart": "npm run build",
+    "start": "npx nodemon ./backend/index.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint && vue-cli-service lint backend",
     "test:e2e": "vue-cli-service test:e2e",
