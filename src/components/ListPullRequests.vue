@@ -22,7 +22,8 @@ export default {
       let result = await api.getPulls(2019)
       this.users = result.data
     } catch (error) {
-      console.log(error)
+      // eslint-disable-next-line
+      console.error(error)
     }
   }
 }
