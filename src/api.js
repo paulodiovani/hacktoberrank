@@ -1,5 +1,5 @@
 import axios from 'axios'
-const port = process.env.PORT || process.env.VUE_APP_DEFAULT_PORT
+const port = process.env.VUE_APP_API_PORT
 
 const api = {
   getPulls (year) {
