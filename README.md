@@ -21,8 +21,6 @@ See [issue #1](https://github.com/paulodiovani/hacktoberrank/issues/1) for more 
 npm install
 ```
 
-Install Redis: [Redis Documentation](https://redis.io/topics/quickstart)
-
 ### Compiles and hot-reloads for development
 ```
 npm run serve
@@ -55,3 +53,7 @@ npm run test:unit
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Dependencies
+[Node.js](https://nodejs.org) >= 10.16.0
+[Redis](https://redis.io)
