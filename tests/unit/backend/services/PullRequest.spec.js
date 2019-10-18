@@ -72,10 +72,10 @@ describe('PullRequest service', () => {
 
     describe('returns an array', () => {
       it('is an array of objects', () => {
-        expect(typeof res.data[0] === 'object').toBe(true)
+        expect(typeof res.chainData[0] === 'object').toBe(true)
       })
       it('has an object with a username ', () => {
-        let user = res.data.find((obj) => {
+        let user = res.chainData.find((obj) => {
           return obj.username === testUsername
         })
 
@@ -83,7 +83,7 @@ describe('PullRequest service', () => {
       })
 
       it('and a child that is an array pull requests', () => {
-        let user = res.data.find((obj) => {
+        let user = res.chainData.find((obj) => {
           return obj.username === testUsername
         })
 
@@ -98,12 +98,12 @@ describe('PullRequest service', () => {
       axios.get.mockResolvedValue({ data: mockedResponse })
 
       try {
-        res = await pr.getAll()
+        res = (await pr.getAll())
+          .groupByUser()
+          .sortByMostActive()
       } catch (error) {
         console.error(error)
       }
-
-      res.groupByUser().sortByMostActive()
     })
 
     it('does exist', () => {
@@ -113,11 +113,11 @@ describe('PullRequest service', () => {
     it('has the first element with most number of pull requests', () => {
       let max = 0
 
-      res.data.map((obj) => {
+      res.chainData.forEach((obj) => {
         max = obj.pullRequests.length > max ? obj.pullRequests.length : max
       })
 
-      expect(res.data[0].pullRequests.length).toBe(max)
+      expect(res.chainData[0].pullRequests.length).toBe(max)
     })
   })
 })
