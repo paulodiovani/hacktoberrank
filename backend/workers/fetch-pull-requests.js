@@ -1,5 +1,5 @@
-const PullRequest = require('./services/PullRequest')
-const redisClient = require('./redis')
+const PullRequest = require('../services/PullRequest')
+const redisClient = require('../redis')
 
 // command line: nodejs cron.js startDate endDate
 const args = process.argv.slice(2) || []

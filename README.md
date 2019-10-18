@@ -51,10 +51,16 @@ npm run test:e2e
 npm run test:unit
 ```
 
-### Cron script to update database with pull requests
+### Fetch pull requests script to update database with pull requests
 
 You can run the script using nodejs or configure a cron to run it.
 
-`nodejs ./backend/cron.js [startDate] [endDate]`
+`node ./backend/workers/fetch-pull-requests.js [startDate] [endDate]`
+
+or
+
+`npm run fetch-prs`
+
+Check:
 
 - [Date Format](https://help.github.com/en/articles/understanding-the-search-syntax)

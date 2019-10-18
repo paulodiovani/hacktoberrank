@@ -11,7 +11,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint && vue-cli-service lint backend",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "fetch-prs": "node ./backend/workers/fetch-pull-requests.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
