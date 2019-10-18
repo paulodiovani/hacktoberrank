@@ -12,7 +12,7 @@ The rank page lists the rank per year and allows to filter by location.
 
 Pull requests are welcome!!
 
-It's a challenge about create a whole project, from beginning to end, should be done through pull requests from other users. 
+It's a challenge about create a whole project, from beginning to end, should be done through pull requests from other users.
 
 See [issue #1](https://github.com/paulodiovani/hacktoberrank/issues/1) for more details.
 
@@ -51,5 +51,16 @@ npm run test:e2e
 npm run test:unit
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Fetch pull requests script to update database with pull requests
+
+You can run the script using nodejs or configure a cron to run it.
+
+`node ./backend/workers/fetch-pull-requests.js [startDate] [endDate]`
+
+or
+
+`npm run fetch-prs`
+
+Check:
+
+- [Date Format](https://help.github.com/en/articles/understanding-the-search-syntax)

@@ -1,13 +1,15 @@
 const axios = require('axios')
 
-let pEndpoint = (year) => {
-  return `https://api.github.com/search/issues?q=is:pr created:${year}-10-01..${year}-10-31&sort=created&order=desc`
+let pEndpoint = (startDate, endDate) => {
+  return `https://api.github.com/search/issues?q=is:pr created:${startDate}..${endDate}&sort=created&order=asc`
 }
 
 class PullRequest {
-  constructor (year) {
+  constructor (startDate, endDate) {
     this.data = {}
-    this.year = year || (new Date()).getFullYear()
+    this.chainData = {}
+    this.startDate = startDate || '2019-10-01 00:00:00'
+    this.endDate = endDate || '2019-10-31 23:59:59'
   }
 
   /**
@@ -15,7 +17,7 @@ class PullRequest {
    */
   async getAll () {
     try {
-      let response = await axios.get(pEndpoint(this.year))
+      let response = await axios.get(pEndpoint(this.startDate, this.endDate))
 
       this.data = response.data
 
@@ -48,7 +50,7 @@ class PullRequest {
       }
     })
 
-    this.data = prArray
+    this.chainData = prArray
 
     return this
   }
@@ -57,11 +59,25 @@ class PullRequest {
    * Sort grouped data by user who has most pull requests
    */
   sortByMostActive () {
-    this.data = this.data.sort((a, b) => {
+    this.chainData = this.chainData.sort((a, b) => {
       return a.pullRequests.length > b.pullRequests.length ? -1 : 1
     })
 
     return this
+  }
+
+  /**
+   * Data property getter
+   */
+  getData () {
+    return this.chainData
+  }
+
+  /**
+   * Returns the latest timestamp
+   */
+  latestTimestamp () {
+    return this.data.items[this.data.items.length - 1].created_at
   }
 }
 
