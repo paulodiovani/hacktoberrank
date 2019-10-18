@@ -2,13 +2,16 @@ const PullRequest = require('./services/PullRequest')
 const redisClient = require('./redis')
 
 // command line: nodejs cron.js startDate endDate
-const args = process.argv.slice(2)
+const args = process.argv.slice(2) || []
 
 let startDate = args[0] || '2019-10-01 00:00:00'
 const endDate = args[1] || '2019-10-31 23:59:59'
-const year = new Date(startDate).getFullYear()
 
-async function runCron () {
+const JEST_MODE = process.env.JEST_WORKER_ID !== undefined
+
+async function runCron (startDate, endDate) {
+  const year = new Date(startDate).getFullYear()
+
   try {
     const latestTimestampInRedis = await redisClient.get('latest_timestamp')
 
@@ -67,10 +70,23 @@ async function runCron () {
       await redisClient.zadd(`users:${year}`, arrayOfOrderedUsers)
     }
 
-    console.log('db updated')
+    if (!JEST_MODE) {
+      process.exit()
+    }
+
+    return redisClient
   } catch (error) {
     console.log(error)
+    if (!JEST_MODE) {
+      process.exit()
+    }
+
+    return redisClient
   }
 }
 
-runCron()
+if (!JEST_MODE) {
+  runCron(startDate, endDate)
+}
+
+module.exports = runCron
