@@ -1,8 +1,8 @@
-import cron from '../../../backend/cron'
+import fetchPullRequests from '../../../../backend/workers/fetch-pull-requests'
 import axios from 'axios'
-import mockedResponse from '../support/response.json'
-import addedData from '../support/addedData.json'
-import PullRequest from '../../../backend/services/PullRequest'
+import mockedResponse from '../../support/response.json'
+import addedData from '../../support/addedData.json'
+import PullRequest from '../../../../backend/services/PullRequest'
 
 jest.mock('axios')
 
@@ -25,13 +25,13 @@ const startDate = '2019-10-01 00:00:00'
 const endDate = '2019-10-31 23:59:59'
 const year = new Date(startDate).getFullYear()
 
-describe('Script Cron that deals with redis', () => {
+describe('Script fetchPullRequests that deals with redis', () => {
   let redisClient
 
   beforeAll(async () => {
     axios.get.mockResolvedValue({ data: mockedResponse })
 
-    redisClient = await cron(startDate, endDate)
+    redisClient = await fetchPullRequests(startDate, endDate)
   })
 
   describe('Initially adds ', () => {
@@ -107,7 +107,7 @@ describe('Script Cron that deals with redis', () => {
 
       oldRedisUserAndScoresList = await redisClient.zrevrange(`users:${year}`, 0, -1, 'WITHSCORES')
 
-      redisClient = await cron(startDate, endDate)
+      redisClient = await fetchPullRequests(startDate, endDate)
 
       pullRequestList = (await pullRequest.getAll())
         .groupByUser()
