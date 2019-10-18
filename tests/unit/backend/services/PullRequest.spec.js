@@ -20,13 +20,11 @@ describe('PullRequest service', () => {
   })
 
   describe('method getAll', () => {
-    let res = {}
-
     beforeAll(async () => {
       axios.get.mockResolvedValue({ data: mockedResponse })
 
       try {
-        res = await pr.getAll()
+        await pr.getAll()
       } catch (error) {
         console.error(error)
       }
@@ -38,7 +36,7 @@ describe('PullRequest service', () => {
 
     it('gives a github response', () => {
       // total_count is always returned in a github api response
-      expect(res.data['total_count']).not.toBe(undefined)
+      expect(pr.data['total_count']).not.toBe(undefined)
     })
 
     it('fills data property with github data', () => {
@@ -47,23 +45,16 @@ describe('PullRequest service', () => {
   })
 
   describe('method groupByUser', () => {
-    let res = {}
     let testUsername
     let testPrUrl
 
     beforeAll(async () => {
       axios.get.mockResolvedValue({ data: mockedResponse })
 
-      try {
-        res = await pr.getAll()
-      } catch (error) {
-        console.error(error)
-      }
+      testUsername = pr.data.items[0].user.login
+      testPrUrl = pr.data.items[0].html_url
 
-      testUsername = res.data.items[0].user.login
-      testPrUrl = res.data.items[0].html_url
-
-      res.groupByUser()
+      pr.groupByUser()
     })
 
     it('does exist', () => {
@@ -72,10 +63,10 @@ describe('PullRequest service', () => {
 
     describe('returns an array', () => {
       it('is an array of objects', () => {
-        expect(typeof res.chainData[0] === 'object').toBe(true)
+        expect(typeof pr.chainData[0] === 'object').toBe(true)
       })
       it('has an object with a username ', () => {
-        let user = res.chainData.find((obj) => {
+        let user = pr.chainData.find((obj) => {
           return obj.username === testUsername
         })
 
@@ -83,7 +74,7 @@ describe('PullRequest service', () => {
       })
 
       it('and a child that is an array pull requests', () => {
-        let user = res.chainData.find((obj) => {
+        let user = pr.chainData.find((obj) => {
           return obj.username === testUsername
         })
 
@@ -93,17 +84,10 @@ describe('PullRequest service', () => {
   })
 
   describe('method sortByMostActive', () => {
-    let res = {}
     beforeAll(async () => {
       axios.get.mockResolvedValue({ data: mockedResponse })
 
-      try {
-        res = (await pr.getAll())
-          .groupByUser()
-          .sortByMostActive()
-      } catch (error) {
-        console.error(error)
-      }
+      pr.sortByMostActive()
     })
 
     it('does exist', () => {
@@ -113,11 +97,34 @@ describe('PullRequest service', () => {
     it('has the first element with most number of pull requests', () => {
       let max = 0
 
-      res.chainData.forEach((obj) => {
+      pr.chainData.forEach((obj) => {
         max = obj.pullRequests.length > max ? obj.pullRequests.length : max
       })
 
-      expect(res.chainData[0].pullRequests.length).toBe(max)
+      expect(pr.chainData[0].pullRequests.length).toBe(max)
+    })
+  })
+
+  describe('method getData', () => {
+    beforeAll(async () => {
+      axios.get.mockResolvedValue({ data: mockedResponse })
+
+      pr.getData()
+    })
+
+    it('does exist', () => {
+      expect(typeof pr.getData === 'function').toBe(true)
+    })
+
+    it('returns chainData', () => {
+      expect(pr.hasOwnProperty('chainData')).toBe(true)
+    })
+  })
+
+  describe('method latestTimestamp', () => {
+    it('returns latest timestamp', () => {
+      const latestDate = pr.data.items[pr.data.items.length - 1].created_at
+      expect(pr.latestTimestamp()).toBe(latestDate)
     })
   })
 })
