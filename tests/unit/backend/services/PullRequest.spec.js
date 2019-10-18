@@ -49,8 +49,6 @@ describe('PullRequest service', () => {
     let testPrUrl
 
     beforeAll(async () => {
-      axios.get.mockResolvedValue({ data: mockedResponse })
-
       testUsername = pr.data.items[0].user.login
       testPrUrl = pr.data.items[0].html_url
 
@@ -85,8 +83,6 @@ describe('PullRequest service', () => {
 
   describe('method sortByMostActive', () => {
     beforeAll(async () => {
-      axios.get.mockResolvedValue({ data: mockedResponse })
-
       pr.sortByMostActive()
     })
 
@@ -107,8 +103,6 @@ describe('PullRequest service', () => {
 
   describe('method getData', () => {
     beforeAll(async () => {
-      axios.get.mockResolvedValue({ data: mockedResponse })
-
       pr.getData()
     })
 
