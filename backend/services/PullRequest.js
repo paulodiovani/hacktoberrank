@@ -7,6 +7,7 @@ let pEndpoint = (startDate, endDate) => {
 class PullRequest {
   constructor (startDate, endDate) {
     this.data = {}
+    this.chainData = {}
     this.startDate = startDate || '2019-10-01 00:00:00'
     this.endDate = endDate || '2019-10-31 23:59:59'
   }
@@ -49,7 +50,7 @@ class PullRequest {
       }
     })
 
-    this.data = prArray
+    this.chainData = prArray
 
     return this
   }
@@ -58,11 +59,18 @@ class PullRequest {
    * Sort grouped data by user who has most pull requests
    */
   sortByMostActive () {
-    this.data = this.data.sort((a, b) => {
+    this.chainData = this.chainData.sort((a, b) => {
       return a.pullRequests.length > b.pullRequests.length ? -1 : 1
     })
 
     return this
+  }
+
+  /**
+   * Data property getter
+   */
+  getData () {
+    return this.chainData
   }
 
   /**
