@@ -9,7 +9,7 @@ PullRequestController.get('/:year?', async function (req, res) {
   try {
     const users = await redisClient.zrevrange(`users:${year}`, 0, -1)
     const promises = []
-    let arrOfObjects = []
+    const arrOfObjects = []
 
     for (let i = 0; i < users.length; i++) {
       promises[i] = redisClient.smembers(`pull-requests:${year}:${users[i]}`)

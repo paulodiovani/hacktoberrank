@@ -9,7 +9,7 @@
     "serve": "vue-cli-service serve",
     "serve-backend": "npx nodemon ./backend/index.js",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint && vue-cli-service lint backend",
+    "lint": "vue-cli-service lint --no-fix --max-warnings 0 src/ backend/ tests/",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
     "fetch-prs": "node ./backend/workers/fetch-pull-requests.js"

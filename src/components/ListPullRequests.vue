@@ -24,7 +24,7 @@ export default {
   }),
   async mounted () {
     try {
-      let result = await api.getPulls(2019)
+      const result = await api.getPulls(2019)
       this.users = result.data
     } catch (error) {
       // eslint-disable-next-line
