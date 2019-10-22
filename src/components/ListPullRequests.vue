@@ -74,22 +74,20 @@ export default {
   @media screen and (min-width: 768px) {
     .list-pull-request {
       text-align: center;
+      width: 100%;
     }
 
     .pr-title {
       font-size: 28px;
     }
-    .pr-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
 
+    .pr-list {
       .pr-item {
         border-radius: 10px;
-        width: 25%;
-        margin: 5px;
+        width: 50%;
         background-color: rgba(255,184,86, .2);
         text-overflow: ellipsis;
+        margin: 15px auto 15px auto;
 
         &:hover {
           -webkit-box-shadow: 0px 0px 10px -1px #A64C44;
@@ -99,8 +97,10 @@ export default {
       }
 
       .pr-content {
-        padding: 15px;
+        padding: 10px;
         list-style-type: none;
+        display: flex;
+        justify-content: center;
       }
     }
   }
