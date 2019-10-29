@@ -10,9 +10,9 @@ PullRequestController.get('/:year?', async function (req, res) {
     const users = await redisClient.zrevrange(`users:${year}`, 0, -1)
     const promises = []
     const arrOfObjects = []
-    
+
     const nonBotUsers = users.filter((user) => {
-      return !user.endsWith("[bot]")
+      return !user.endsWith('[bot]')
     })
 
     for (let i = 0; i < nonBotUsers.length; i++) {
