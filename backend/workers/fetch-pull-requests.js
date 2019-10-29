@@ -1,5 +1,6 @@
 const PullRequest = require('../services/PullRequest')
 const redisClient = require('../redis')
+const debug = require('debug')('workers:fetch-pull-requests')
 
 // command line: nodejs cron.js startDate endDate
 const args = process.argv.slice(2) || []
@@ -77,6 +78,7 @@ async function runCron (startDate, endDate) {
     return redisClient
   } catch (error) {
     // console.log(error)
+    debug(error)
     if (!JEST_MODE) {
       process.exit()
     }

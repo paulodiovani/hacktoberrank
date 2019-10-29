@@ -1,6 +1,7 @@
 import PullRequest from '../../../../backend/services/PullRequest'
 import axios from 'axios'
 import mockedResponse from '../../support/response.json'
+const debug = require('debug')('services:pull-request')
 
 jest.mock('axios')
 
@@ -26,7 +27,7 @@ describe('PullRequest service', () => {
       try {
         await pr.getAll()
       } catch (error) {
-        return error
+        debug(error)
         // console.error(error)
       }
     })

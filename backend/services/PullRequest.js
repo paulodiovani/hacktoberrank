@@ -1,4 +1,5 @@
 const axios = require('axios')
+const debug = require('debug')('services:pull-request')
 
 const pEndpoint = (startDate, endDate) => {
   return `https://api.github.com/search/issues?q=is:pr created:${startDate}..${endDate}&sort=created&order=asc`
@@ -23,8 +24,8 @@ class PullRequest {
 
       return this
     } catch (error) {
-      return error
       // console.error(error)
+      debug(error)
     }
   }
 
