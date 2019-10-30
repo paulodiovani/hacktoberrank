@@ -11,14 +11,18 @@ PullRequestController.get('/:year?', async function (req, res) {
     const promises = []
     const arrOfObjects = []
 
-    for (let i = 0; i < users.length; i++) {
-      promises[i] = redisClient.smembers(`pull-requests:${year}:${users[i]}`)
+    const nonBotUsers = users.filter((user) => {
+      return !user.endsWith('[bot]')
+    })
+
+    for (let i = 0; i < nonBotUsers.length; i++) {
+      promises[i] = redisClient.smembers(`pull-requests:${year}:${nonBotUsers[i]}`)
     }
 
     const result = await Promise.all(promises)
-    for (let i = 0; i < users.length; i++) {
+    for (let i = 0; i < nonBotUsers.length; i++) {
       arrOfObjects.push({
-        username: users[i],
+        username: nonBotUsers[i],
         pullRequests: result[i]
       })
     }

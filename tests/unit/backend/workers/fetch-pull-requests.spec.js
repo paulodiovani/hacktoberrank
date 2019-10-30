@@ -35,16 +35,16 @@ describe('Script fetchPullRequests that deals with redis', () => {
   })
 
   describe('Initially adds ', () => {
-    it('adds 8 users to users:2019', async () => {
+    it('adds 9 users to users:2019', async () => {
       const users = await redisClient.zrevrange(`users:${year}`, 0, -1)
 
-      expect(users.length).toBe(8)
+      expect(users.length).toBe(9)
     })
 
-    it('adds 8 pullrequests:2019:* that correspond to 8 users', async () => {
+    it('adds 9 pullrequests:2019:* that correspond to 8 users', async () => {
       const pullRequests = await redisClient.keys(`pull-requests:${year}:*`)
 
-      expect(pullRequests.length).toBe(8)
+      expect(pullRequests.length).toBe(9)
     })
 
     it('has correct latest timestamp', async () => {
