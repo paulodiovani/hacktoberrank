@@ -77,7 +77,6 @@ async function runCron (startDate, endDate) {
 
     return redisClient
   } catch (error) {
-    // console.log(error)
     debug(error)
     if (!JEST_MODE) {
       process.exit()

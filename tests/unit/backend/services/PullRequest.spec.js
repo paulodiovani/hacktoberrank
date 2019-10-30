@@ -1,7 +1,6 @@
 import PullRequest from '../../../../backend/services/PullRequest'
 import axios from 'axios'
 import mockedResponse from '../../support/response.json'
-const debug = require('debug')('services:pull-request')
 
 jest.mock('axios')
 
@@ -23,13 +22,7 @@ describe('PullRequest service', () => {
   describe('method getAll', () => {
     beforeAll(async () => {
       axios.get.mockResolvedValue({ data: mockedResponse })
-
-      try {
-        await pr.getAll()
-      } catch (error) {
-        debug(error)
-        // console.error(error)
-      }
+      await pr.getAll()
     })
 
     it('does exist', () => {

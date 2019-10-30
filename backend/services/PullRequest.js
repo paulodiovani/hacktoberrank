@@ -24,7 +24,6 @@ class PullRequest {
 
       return this
     } catch (error) {
-      // console.error(error)
       debug(error)
     }
   }
