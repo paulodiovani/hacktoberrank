@@ -9,8 +9,7 @@
     "serve": "vue-cli-service serve",
     "start": "node ./backend/index.js",
     "build": "vue-cli-service build",
-    "prestart": "npm run build",
-    "lint": "vue-cli-service lint && vue-cli-service lint backend",
+    "lint": "vue-cli-service lint --no-fix --max-warnings 0 src/ backend/ tests/",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
     "fetch-prs": "node ./backend/workers/fetch-pull-requests.js"
@@ -19,6 +18,7 @@
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "cors": "^2.8.5",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "ioredis": "^4.14.1",
     "register-service-worker": "^1.6.2",

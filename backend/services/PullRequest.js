@@ -1,6 +1,7 @@
 const axios = require('axios')
+const debug = require('debug')('services:pull-request')
 
-let pEndpoint = (startDate, endDate) => {
+const pEndpoint = (startDate, endDate) => {
   return `https://api.github.com/search/issues?q=is:pr created:${startDate}..${endDate}&sort=created&order=asc`
 }
 
@@ -17,13 +18,13 @@ class PullRequest {
    */
   async getAll () {
     try {
-      let response = await axios.get(pEndpoint(this.startDate, this.endDate))
+      const response = await axios.get(pEndpoint(this.startDate, this.endDate))
 
       this.data = response.data
 
       return this
     } catch (error) {
-      console.error(error)
+      debug(error)
     }
   }
 
@@ -31,10 +32,10 @@ class PullRequest {
    * Group pull requests by user id
    */
   groupByUser () {
-    let prArray = []
+    const prArray = []
 
     this.data.items.forEach((item) => {
-      let user = prArray.find((ele) => {
+      const user = prArray.find((ele) => {
         return ele.username === item.user.login
       })
 
