@@ -5,6 +5,7 @@ const cors = require('cors')
 const path = require('path')
 
 const router = require('./api/router')
+const debug = require('debug')('index')
 
 const app = express()
 
@@ -15,5 +16,5 @@ app.use('/api/v1', cors(), router)
 const port = process.env.PORT
 
 app.listen(port, () =>
-  console.log(`backend service listening at port ${port}`)
+  debug(`backend service listening at port ${port}`)
 )

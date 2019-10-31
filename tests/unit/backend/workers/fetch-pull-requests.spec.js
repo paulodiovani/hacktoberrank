@@ -35,16 +35,16 @@ describe('Script fetchPullRequests that deals with redis', () => {
   })
 
   describe('Initially adds ', () => {
-    it('adds 8 users to users:2019', async () => {
+    it('adds 9 users to users:2019', async () => {
       const users = await redisClient.zrevrange(`users:${year}`, 0, -1)
 
-      expect(users.length).toBe(8)
+      expect(users.length).toBe(9)
     })
 
-    it('adds 8 pullrequests:2019:* that correspond to 8 users', async () => {
+    it('adds 9 pullrequests:2019:* that correspond to 8 users', async () => {
       const pullRequests = await redisClient.keys(`pull-requests:${year}:*`)
 
-      expect(pullRequests.length).toBe(8)
+      expect(pullRequests.length).toBe(9)
     })
 
     it('has correct latest timestamp', async () => {
@@ -69,7 +69,7 @@ describe('Script fetchPullRequests that deals with redis', () => {
 
         const users = await redisClient.zrevrange(`users:${year}`, 0, -1)
         const promises = []
-        let arrOfObjects = []
+        const arrOfObjects = []
 
         for (let i = 0; i < users.length; i++) {
           promises[i] = redisClient.smembers(`pull-requests:${year}:${users[i]}`)
@@ -167,8 +167,8 @@ describe('Script fetchPullRequests that deals with redis', () => {
       const promises = []
       const orderedScoreList = []
       for (let i = 0; i < users.length; i += 2) {
-        let username = users[i]
-        let score = users[i + 1]
+        const username = users[i]
+        const score = users[i + 1]
 
         orderedScoreList.push(score)
 
