@@ -12,20 +12,21 @@
 </template>
 
 <script>
-import ListPullRequests from "./components/ListPullRequests";
+import ListPullRequests from './components/ListPullRequests'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
     ListPullRequests
   }
-};
+}
 </script>
 
 <style lang="scss">
 body {
   margin: 0 !important;
   background-color: #152347;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -36,7 +37,7 @@ body {
   &__title {
     position: absolute;
     text-align: center;
-    font-family: "Special Elite", cursive;
+    font-family: 'Special Elite', cursive;
     padding-top: 18px;
     span {
       font-size: 45px;
@@ -67,7 +68,7 @@ body {
 }
 
 #app {
-  font-family: "Space Mono", monospace;
+  font-family: 'Space Mono', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

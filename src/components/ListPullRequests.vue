@@ -22,7 +22,7 @@
             <div class="hover-effect">#{{ userIndex + 1 }}</div>
             <span class="pr-rank">#{{ userIndex + 1 }}</span>
             <div class="pr-username">{{ user.username }}</div>
-            <a :href="pr" class="pr-link">GO TO PR</a>
+            <a :href="pr" class="pr-link">{{ pr | cutPRLink }}</a>
           </li>
         </ul>
       </div>
@@ -149,10 +149,15 @@ export default {
 .pr-link {
   text-decoration: none;
   color: #fff;
-  border: 1px solid;
   padding: 0px;
-  height: 24px;
   padding: 5px 14px;
+  width: 30%;
+  font-size: 14px;
+  word-break: break-word;
+  transition: 0.3s;
+  &:hover {
+    color: #5392fb;
+  }
 }
 
 @media screen and (min-width: 768px) {
