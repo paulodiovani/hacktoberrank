@@ -5,9 +5,11 @@ const PullRequestController = express()
 
 PullRequestController.get('/:year?', async function (req, res) {
   const year = req.params.year || (new Date()).getFullYear()
-
+  let { page, limit } = req.query
+  page = Number(page)
+  limit = Number(limit)
   try {
-    const users = await redisClient.zrevrange(`users:${year}`, 0, -1)
+    const users = await redisClient.zrevrange(`users:${year}`, page - 1, page * (limit + 2))
     const promises = []
     let arrOfObjects = []
     
