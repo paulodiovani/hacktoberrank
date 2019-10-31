@@ -22,12 +22,7 @@ describe('PullRequest service', () => {
   describe('method getAll', () => {
     beforeAll(async () => {
       axios.get.mockResolvedValue({ data: mockedResponse })
-
-      try {
-        await pr.getAll()
-      } catch (error) {
-        console.error(error)
-      }
+      await pr.getAll()
     })
 
     it('does exist', () => {
@@ -64,7 +59,7 @@ describe('PullRequest service', () => {
         expect(typeof pr.chainData[0] === 'object').toBe(true)
       })
       it('has an object with a username ', () => {
-        let user = pr.chainData.find((obj) => {
+        const user = pr.chainData.find((obj) => {
           return obj.username === testUsername
         })
 
@@ -72,7 +67,7 @@ describe('PullRequest service', () => {
       })
 
       it('and a child that is an array pull requests', () => {
-        let user = pr.chainData.find((obj) => {
+        const user = pr.chainData.find((obj) => {
           return obj.username === testUsername
         })
 

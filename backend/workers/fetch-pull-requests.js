@@ -1,10 +1,11 @@
 const PullRequest = require('../services/PullRequest')
 const redisClient = require('../redis')
+const debug = require('debug')('workers:fetch-pull-requests')
 
 // command line: nodejs cron.js startDate endDate
 const args = process.argv.slice(2) || []
 
-let startDate = args[0] || '2019-10-01 00:00:00'
+const startDate = args[0] || '2019-10-01 00:00:00'
 const endDate = args[1] || '2019-10-31 23:59:59'
 
 const JEST_MODE = process.env.JEST_WORKER_ID !== undefined
@@ -38,14 +39,14 @@ async function runCron (startDate, endDate) {
 
     const addedPullsRef = await Promise.all(prsPromises)
 
-    let usersAndScores = await redisClient.zrevrange(`users:${year}`, 0, -1, 'WITHSCORES')
+    const usersAndScores = await redisClient.zrevrange(`users:${year}`, 0, -1, 'WITHSCORES')
 
     if (usersAndScores.length) {
     // if db already had users, then
-      for (let pr in pullRequestList) {
+      for (const pr in pullRequestList) {
         const nameIndex = usersAndScores.indexOf(pullRequestList[pr].username)
         if (nameIndex >= 0) {
-          let scoreIndex = nameIndex + 1
+          const scoreIndex = nameIndex + 1
           usersAndScores[scoreIndex] = parseInt(usersAndScores[scoreIndex]) + addedPullsRef[pr]
         } else {
           usersAndScores.push(
@@ -76,7 +77,7 @@ async function runCron (startDate, endDate) {
 
     return redisClient
   } catch (error) {
-    console.log(error)
+    debug(error)
     if (!JEST_MODE) {
       process.exit()
     }

@@ -11,10 +11,10 @@ PullRequestController.get('/:year?', async function (req, res) {
   try {
     const users = await redisClient.zrevrange(`users:${year}`, page - 1, page * (limit + 2))
     const promises = []
-    let arrOfObjects = []
-    
+    const arrOfObjects = []
+
     const nonBotUsers = users.filter((user) => {
-      return !user.endsWith("[bot]")
+      return !user.endsWith('[bot]')
     })
 
     for (let i = 0; i < nonBotUsers.length; i++) {
