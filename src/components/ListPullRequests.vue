@@ -4,8 +4,10 @@
     <div class="pr-list">
       <div
         v-for="(user, userIndex) in users"
-        v-bind:key="user.username"
+        v-bind:key="userIndex"
         class="pr-item"
+        @mouseover="setHover(userIndex, true)"
+        @mouseleave="setHover(userIndex, false)"
       >
         <template v-if="userIndex < 3">
           <img
@@ -20,7 +22,7 @@
         <div class="pr-username">{{ user.username }}</div>
         <ul class="pr-links">
           <li
-            v-for="(pr, index) in user.pullRequests"
+            v-for="(pr, index) in slicePRs(user)"
             v-bind:key="index"
             class="pr-li"
           >
@@ -29,27 +31,72 @@
         </ul>
       </div>
     </div>
+    <loader ref="pageBottom" />
   </div>
 </template>
 
 <script>
 import api from '../api'
+import Loader from '@/components/Loader.vue'
+
+// Define the observer
+let observer
+// Define observer Callback
+let observerCallBack = entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.$notifyInView()
+    }
+  })
+}
 
 export default {
   name: 'ListPullRequests',
+  components: {
+    Loader
+  },
   data: () => ({
-    users: []
-  }),
-  async mounted () {
-    try {
-      let result = await api.getPulls(2019)
-      this.users = result.data
-    } catch (error) {
-      // eslint-disable-next-line
-      console.log(error)
+    users: [],
+    pagination: {
+      limit: 10,
+      page: 1
     }
+  }),
+  async created () {
+    await this.fetchPullRequests()
+  },
+  mounted () {
+    if (!observer) {
+      observer = new IntersectionObserver(observerCallBack, { root: null })
+    }
+    this.$refs.pageBottom.$el.$notifyInView = async () => {
+      this.pagination.page++
+      await this.fetchPullRequests()
+    }
+    observer.observe(this.$refs.pageBottom.$el)
   },
   methods: {
+    slicePRs (user) {
+      let end = 2
+      if (user.hover) end = user.pullRequests.length
+      return user.pullRequests.slice(0, end)
+    },
+    setHover (index, val) {
+      this.$set(this.users[index], 'hover', val)
+    },
+    async fetchPullRequests () {
+      try {
+        const { page, limit } = this.pagination
+        let result = await api.getPulls(2019, {
+          page,
+          limit
+        })
+        this.users.push(...result.data)
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log(error)
+      }
+    },
     svgMedal (index) {
       if (index === 0) {
         return '003-gold-medal.svg'
