@@ -13,7 +13,7 @@ app.use('/', express.static(path.join(__dirname, '../dist')))
 
 app.use('/api/v1', cors(), router)
 
-const port = process.env.PORT
+const port = process.env.PORT || 8001
 
 app.listen(port, () =>
   debug(`backend service listening at port ${port}`)

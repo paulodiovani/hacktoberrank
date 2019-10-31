@@ -16,14 +16,11 @@ It's a challenge about create a whole project, from beginning to end, should be 
 
 See [issue #1](https://github.com/paulodiovani/hacktoberrank/issues/1) for more details.
 
+## Dependencies
+- nodejs >= 10.16.0
+- redis
+
 ## Project setup
-
-### Redis server is needed
-```
-sudo apt install redis-server
-```
-
-### Environment files and start
 ```
 cp .env.example .env
 
