@@ -17,18 +17,24 @@ It's a challenge about create a whole project, from beginning to end, should be 
 See [issue #1](https://github.com/paulodiovani/hacktoberrank/issues/1) for more details.
 
 ## Project setup
+
+### Redis server is needed
 ```
+sudo apt install redis-server
+```
+
+### Environment files and start
+```
+cp .env.example .env
+
 npm install
+
+npm start
 ```
 
 ### Compiles and hot-reloads for development
 ```
 npm run serve
-```
-
-### Serves Express backend
-```
-npm run serve-backend
 ```
 
 ### Compiles and minifies for production
