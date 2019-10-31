@@ -7,7 +7,7 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve-backend": "npx nodemon ./backend/index.js",
+    "start": "node ./backend/index.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --no-fix --max-warnings 0 src/ backend/ tests/",
     "test:e2e": "vue-cli-service test:e2e",
@@ -45,6 +45,7 @@
     "prettier": "^1.18.2",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "dotenv": "^8.2.0"
   }
 }
