@@ -1,11 +1,16 @@
-require('dotenv').config()
+const debug = require('debug')('index')
+
+try {
+  require('dotenv').config()
+} catch (e) {
+  debug(e)
+}
 
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
 
 const router = require('./api/router')
-const debug = require('debug')('index')
 
 const app = express()
 
