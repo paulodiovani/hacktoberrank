@@ -5,7 +5,7 @@ const host = process.env.VUE_APP_DEFAULT_BACKEND_HOST || 'http://localhost'
 
 const api = {
   getPulls (year) {
-    if (port === 80) {
+    if (parseInt(port) === 80) {
       return axios.get(`${host}/api/v1/pulls/${year}`)
     }
 
