@@ -15,7 +15,7 @@
     "fetch-prs": "node ./backend/workers/fetch-pull-requests.js"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "core-js": "^2.6.5",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
